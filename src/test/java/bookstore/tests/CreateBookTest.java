@@ -1,9 +1,11 @@
 package bookstore.tests;
 
+import enums.Category;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
+import model.Book;
 
 import static io.restassured.RestAssured.basePath;
 import static io.restassured.RestAssured.given;
@@ -12,14 +14,12 @@ public class CreateBookTest {
 
     @Test
     public void testCreateBook() {
-        String book = "{\n" +
-                "  \"author\": \"Mark Twain\",\n" +
-                "  \"category\": \"Adventures\",\n" +
-                "  \"count\": 10,\n" +
-                "  \"description\": \"The story about Tom Sawyer.\",\n" +
-                "  \"price\": 250,\n" +
-                "  \"title\": \"The Adventures of Tom Sawyer\"\n" +
-                "}";
+        Book book = new Book("Mark Twain",
+                Category.Adventures,
+                10,
+                "The story about Tom Sawyer.",250,
+                "The Adventures of Tom Sawyer");
+
 
         given().baseUri("http://localhost:8080").
                 basePath("/rest-api").
