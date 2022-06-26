@@ -6,6 +6,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
 import model.Book;
+import props.TestConfig;
 
 import static io.restassured.RestAssured.basePath;
 import static io.restassured.RestAssured.given;
@@ -21,8 +22,13 @@ public class CreateBookTest {
                 "The Adventures of Tom Sawyer");
 
 
-        given().baseUri("http://localhost:8080").
-                basePath("/rest-api").
+        given().baseUri(TestConfig.Uri.value).
+                basePath(TestConfig.Path.value).
+
+//config.properties
+//uri=http://localhost:8080
+//path=/rest-api/
+
                 contentType(ContentType.JSON).
                 body(book).
                 log().all().
