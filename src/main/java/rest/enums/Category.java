@@ -1,4 +1,4 @@
-package enums;
+package rest.enums;
 
 public enum Category {
     Adventures,

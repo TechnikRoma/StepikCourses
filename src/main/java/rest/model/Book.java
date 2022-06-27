@@ -1,7 +1,7 @@
-package model;
+package rest.model;
 
 
-import enums.Category;
+import rest.enums.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
