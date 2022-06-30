@@ -1,6 +1,7 @@
 package bookstore.tests;
 
 import bookstore.tests.rest.client.TestClient;
+import bookstore.tests.rest.model.BookValidatableResponse;
 import rest.enums.Category;
 import org.testng.annotations.Test;
 import bookstore.tests.rest.model.request.Book;
@@ -19,11 +20,14 @@ public class CreateBookTest {
 
         TestClient client = new TestClient();
 
-        client.create(book).
+        BookValidatableResponse response = client.create(book).
                 checkStatusCode(201).
                 checkIdNotNull().
                checkLastUpdated().
+                checkTitle().
                checkBook(book);
+
+        client.read(response.getId()).checkStatusCode(200).checkId(response.getId()).checkLastUpdated().checkBook(book);
 
 
 
