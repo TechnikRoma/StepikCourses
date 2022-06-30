@@ -1,12 +1,9 @@
 package bookstore.tests;
 
-import rest.client.TestClient;
+import bookstore.tests.rest.client.TestClient;
 import rest.enums.Category;
-import io.restassured.http.ContentType;
-import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
-import rest.model.Book;
-import props.TestConfig;
+import bookstore.tests.rest.model.request.Book;
 
 import static io.restassured.RestAssured.given;
 
@@ -20,17 +17,14 @@ public class CreateBookTest {
                 "The story about Tom Sawyer.", 250,
                 "The Adventures of Tom Sawyer");
 
-        TestClient testClient = new TestClient();
+        TestClient client = new TestClient();
 
-        testClient.create(book).assertThat().
-                statusCode(201).
-                body("id", Matchers.notNullValue()).
-                body("title", Matchers.equalTo("The Adventures of Tom Sawyer")).
-                body("description", Matchers.equalTo("The story about Tom Sawyer.")).
-                body("author", Matchers.equalTo("Mark Twain")).
-                body("price", Matchers.equalTo(250)).
-                body("count", Matchers.equalTo(10)).
-                log().all();
+        client.create(book).
+                checkStatusCode(201).
+                checkIdNotNull().
+               checkLastUpdated().
+               checkBook(book);
+
 
 
     }
