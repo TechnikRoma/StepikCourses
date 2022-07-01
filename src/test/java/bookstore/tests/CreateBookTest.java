@@ -12,22 +12,18 @@ import java.util.Random;
 
 import static io.restassured.RestAssured.given;
 
-public class CreateBookTest {
+public class CreateBookTest extends BookStoreTestBase {
 
     @Test(dataProvider = "createBooks")
     public void testCreateBook(Book book) {
-
-
-        TestClient client = new TestClient();
-
-        BookValidatableResponse response = client.create(book).
+        BookValidatableResponse response = testClient.create(book).
                 checkStatusCode(201).
                 checkIdNotNull().
                 checkLastUpdated().
                 checkTitle().
                 checkBook(book);
 
-        client.read(response.getId()).
+        testClient.read(response.getId()).
                 checkStatusCode(200).
                 checkId(response.getId()).
                 checkLastUpdated().
