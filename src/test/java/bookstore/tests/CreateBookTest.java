@@ -1,42 +1,36 @@
 package bookstore.tests;
 
-import io.restassured.http.ContentType;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
+import bookstore.tests.rest.client.TestClient;
+import bookstore.tests.rest.model.BookValidatableResponse;
+import bookstore.tests.rest.model.request.BookData;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.testng.annotations.DataProvider;
+import rest.enums.Category;
 import org.testng.annotations.Test;
+import bookstore.tests.rest.model.request.Book;
 
-import static io.restassured.RestAssured.basePath;
+import java.util.Random;
+
 import static io.restassured.RestAssured.given;
 
-public class CreateBookTest {
+public class CreateBookTest extends BookStoreTestBase {
 
-    @Test
-    public void testCreateBook() {
-        String book = "{\n" +
-                "  \"author\": \"Mark Twain\",\n" +
-                "  \"category\": \"Adventures\",\n" +
-                "  \"count\": 10,\n" +
-                "  \"description\": \"The story about Tom Sawyer.\",\n" +
-                "  \"price\": 250,\n" +
-                "  \"title\": \"The Adventures of Tom Sawyer\"\n" +
-                "}";
+    @Test(dataProvider = "positive", dataProviderClass = BookData.class)
+    public void testCreateBook(Book book) {
+        BookValidatableResponse response = testClient.create(book).
+                checkStatusCode(201).
+                checkIdNotNull().
+                checkLastUpdated().
+                checkTitle().
+                checkBook(book);
 
-        given().baseUri("http://localhost:8080").
-                basePath("/rest-api").
-                contentType(ContentType.JSON).
-                body(book).
-                log().all().
-                when().post("books").
-                then().assertThat().statusCode(201).
-                body("id", Matchers.notNullValue()).
-                body("title", Matchers.equalTo("The Adventures of Tom Sawyer")).
-                body("description", Matchers.equalTo("The story about Tom Sawyer.")).
-                body("author", Matchers.equalTo("Mark Twain")).
-                body("price", Matchers.equalTo(250)).
-                body("count", Matchers.equalTo(10)).
-                log().all();
-
+        testClient.read(response.getId()).
+                checkStatusCode(200).
+                checkId(response.getId()).
+                checkLastUpdated().
+                checkBook(book);
 
     }
-}
 
+
+}
