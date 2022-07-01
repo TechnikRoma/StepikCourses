@@ -22,4 +22,21 @@ public class BookData {
                 {Book.defaultOf().setTitle(RandomStringUtils.randomAlphabetic(256))},
         };
     }
+
+    @DataProvider
+    public static Object[][] negative() {
+        return new Object[][]{
+                {Book.defaultOf().setAuthor(RandomStringUtils.randomAlphabetic(2))},
+                {Book.defaultOf().setAuthor(RandomStringUtils.randomAlphabetic(101))},
+                {Book.defaultOf().setCategory(Category.Unknown)},
+                {Book.defaultOf().setCount(-1)},
+                {Book.defaultOf().setDescription(RandomStringUtils.randomAlphabetic(2))},
+                {Book.defaultOf().setDescription(RandomStringUtils.randomAlphabetic(513))},
+                {Book.defaultOf().setPrice(-1)},
+                {Book.defaultOf().setTitle(RandomStringUtils.randomAlphabetic(2))},
+                {Book.defaultOf().setTitle(RandomStringUtils.randomAlphabetic(257))}
+
+
+        };
+    }
 }
