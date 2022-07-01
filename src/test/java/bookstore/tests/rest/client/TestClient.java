@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import props.TestConfig;
 import bookstore.tests.rest.model.request.Book;
 import bookstore.tests.rest.model.BookValidatableResponse;
+
 import static io.restassured.RestAssured.given;
 
 @AllArgsConstructor
@@ -36,7 +37,7 @@ public class TestClient {
                 body(book);
     }
 
-    public BookValidatableResponse create (Book book) {
+    public BookValidatableResponse create(Book book) {
         Response response = getRequestSpec(book).when().
                 post("/books");
         response.then().log().all();
@@ -44,9 +45,17 @@ public class TestClient {
         return new BookValidatableResponse(response);
     }
 
-    public  BookValidatableResponse read(Integer id) {
+    public BookValidatableResponse read(Integer id) {
         Response response = getRequestSpec().when().
                 get("/books/{id}", id);
+
+        response.then().log().all();
+        return new BookValidatableResponse(response);
+    }
+
+    public BookValidatableResponse update(Integer id, Book book) {
+        Response response = getRequestSpec(book).when().
+                put("/books/{id}", id);
 
         response.then().log().all();
         return new BookValidatableResponse(response);

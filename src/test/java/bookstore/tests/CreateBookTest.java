@@ -2,6 +2,7 @@ package bookstore.tests;
 
 import bookstore.tests.rest.client.TestClient;
 import bookstore.tests.rest.model.BookValidatableResponse;
+import bookstore.tests.rest.model.request.BookData;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.DataProvider;
 import rest.enums.Category;
@@ -14,7 +15,7 @@ import static io.restassured.RestAssured.given;
 
 public class CreateBookTest extends BookStoreTestBase {
 
-    @Test(dataProvider = "createBooks")
+    @Test(dataProvider = "positive", dataProviderClass = BookData.class)
     public void testCreateBook(Book book) {
         BookValidatableResponse response = testClient.create(book).
                 checkStatusCode(201).
@@ -31,25 +32,5 @@ public class CreateBookTest extends BookStoreTestBase {
 
     }
 
-    @DataProvider
-    public Object[][] createBooks() {
-        return new Object[][]{
-                {Book.defaultOf()},
-                {Book.defaultOf().setAuthor(RandomStringUtils.randomAlphabetic(3))},
-                {Book.defaultOf().setAuthor(RandomStringUtils.randomAlphabetic(100))},
-                {Book.defaultOf().setCategory(Category.Detective)},
-                {Book.defaultOf().setCategory(Category.Horror)},
-                {Book.defaultOf().setCategory(Category.Thriller)},
-                {Book.defaultOf().setCount(0)},
-                {Book.defaultOf().setDescription(RandomStringUtils.randomAlphabetic(3))},
-                {Book.defaultOf().setDescription(RandomStringUtils.randomAlphabetic(512))},
-                {Book.defaultOf().setPrice(0)},
-                {Book.defaultOf().setTitle(RandomStringUtils.randomAlphabetic(3))},
-                {Book.defaultOf().setTitle(RandomStringUtils.randomAlphabetic(256))},
 
-
-
-
-                };
-    }
-    }
+}

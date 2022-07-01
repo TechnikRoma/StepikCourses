@@ -10,38 +10,41 @@ public class BookValidatableResponse {
     private BookResponse model;
     private Response response;
 
-    public BookValidatableResponse(Response response){
+    public BookValidatableResponse(Response response) {
         this.response = response;
         model = response.as(BookResponse.class);
 
     }
 
-    public BookValidatableResponse checkStatusCode(int statusCode){
+    public BookValidatableResponse checkStatusCode(int statusCode) {
 
         response.then().statusCode(statusCode);
 
         return this;
     }
 
-    public BookValidatableResponse checkIdNotNull(){
+    public BookValidatableResponse checkIdNotNull() {
 
         response.then().body("id", Matchers.notNullValue());
 
         return this;
     }
-    public BookValidatableResponse checkLastUpdated(){
+
+    public BookValidatableResponse checkLastUpdated() {
 
         response.then().body("lastUpdated", Matchers.notNullValue());
 
         return this;
     }
-    public BookValidatableResponse checkTitle(){
+
+    public BookValidatableResponse checkTitle() {
 
         response.then().body("title", Matchers.notNullValue());
 
         return this;
     }
-    public BookValidatableResponse checkBook(Book expected){
+
+    public BookValidatableResponse checkBook(Book expected) {
         Assert.assertEquals(new Book(model), expected);
 
         return this;
@@ -53,7 +56,8 @@ public class BookValidatableResponse {
         return this;
 
     }
-    public BookValidatableResponse checkErrorResponse(BookResponse expected){
+
+    public BookValidatableResponse checkErrorResponse(BookResponse expected) {
         response.then().body("timestamp", Matchers.notNullValue());
         Assert.assertEquals(model, expected);
 
@@ -65,7 +69,7 @@ public class BookValidatableResponse {
     }
 
 
-    }
+}
 
 
 
